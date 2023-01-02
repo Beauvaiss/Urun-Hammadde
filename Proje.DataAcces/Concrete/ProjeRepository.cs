@@ -16,19 +16,17 @@ namespace Proje.DataAcces.Concrete
             using (var projeDbContext = new ProjeDbContext())
             {
                 var HamUret = projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
-                if (HamUret != null)
+               if (HamUret != null)
                 {
-                    if (HamUret.UrunId== id)
+                    var x = projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
+                    foreach (var a in x)
                     {
-                        var x = projeDbContext.Hammadde.ToList();
-                        foreach (var hammadde in x)
-                        var x = projeDbContext.Stok.GroupBy(g=>g.HamId).ToList();
-                        foreach (var a in x)
-                        {
-                            HamUret.Hammadde.HamAdet = HamUret.Hammadde.HamAdet + 100;
-                            projeDbContext.SaveChanges();
-                        }
+                        var b = projeDbContext.Hammadde.Where(x => x.HamId.Equals(a.HamId)).FirstOrDefault();
+                        b.HamAdet = b.HamAdet + 100;
+
+                        projeDbContext.SaveChanges();
                     }
+
                 }
             }
         }
@@ -40,20 +38,19 @@ namespace Proje.DataAcces.Concrete
                 var UrunUret = projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
                 if (UrunUret != null)
                 {
-                    if (UrunUret.UrunId == id)
+                    var urungetir = projeDbContext.Urun.Where(w => w.UrunId.Equals(id)).FirstOrDefault();
+                    urungetir.UrunAdet = urungetir.UrunAdet + 1;
+                    var x = projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
+                    foreach (var a in x)
                     {
-                        UrunUret.Urun.UrunAdet = UrunUret.Urun.UrunAdet + 1;
-                        var x = projeDbContext.Stok.GroupBy(g => g.UrunId).ToList();
-                        foreach (var a in x)
-                        {
-                            UrunUret.Hammadde.HamAdet = UrunUret.Hammadde.HamAdet -UrunUret.StokSayi;
-                            projeDbContext.SaveChanges();
-                        }
-                    } 
-                }
+                        var b = projeDbContext.Hammadde.Where(x => x.HamId.Equals(a.HamId)).FirstOrDefault();
+                        var c = projeDbContext.Stok.Where(x => x.Hammadde.HamId.Equals(a.HamId)).FirstOrDefault();
+                        b.HamAdet = b.HamAdet -c.StokSayi;
 
+                        projeDbContext.SaveChanges();
+                    }
+                }
             }
-            throw new NotImplementedException();
         }
 
         public void DeleteHammadde(int id)

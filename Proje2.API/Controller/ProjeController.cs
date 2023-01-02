@@ -44,6 +44,11 @@ namespace Proje.API.Controller
         {
             _projeService.CreateHammadde(id);
         }
-       
+        [HttpPut("Urun Olustur/{id}")]
+        public void Post3(int id)
+        {
+            _projeService.CreateUrun(id);
+        }
+
     }
 }

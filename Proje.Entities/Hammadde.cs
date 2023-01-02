@@ -15,8 +15,6 @@ namespace Proje.Entities
         [StringLength(50)]
         public string HamAdi { get; set; }
         public int HamAdet { get; set; }
-        [ForeignKey("Urun")]
-        public int UrunId { get; set; }
-        public Urun Urun { get; set; }
+    
     }
 }
