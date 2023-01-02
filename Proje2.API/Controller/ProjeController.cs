@@ -15,7 +15,7 @@ namespace Proje.API.Controller
         public ProjeController(IProjeService projeService) {
             _projeService = projeService;
         }
-        [HttpGet]
+        [HttpGet("Urunlerin hepsini cagir")]
         public List<Urun>Get() {
             return _projeService.GetAllUrun();
         }
@@ -25,26 +25,26 @@ namespace Proje.API.Controller
         {
             return _projeService.GetAllHammadde();
         }
-        [HttpGet("{id}")]   
+        [HttpGet("Id'ye göre ürün cagir")]   
         public Urun Get(int id)
         {
             return _projeService.GetUrunById(id);
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Urun Sil")]
         public void Delete(int id)
         {
             _projeService.DeleteUrun(id);
 
         }
         
-        [HttpPut("{id}")]
+        [HttpPut("Hammadde Olustur")]
         public void Post2(int id)
         {
             _projeService.CreateHammadde(id);
         }
-        [HttpPut("Urun Olustur/{id}")]
+        [HttpPut("Urun Olustur")]
         public void Post3(int id)
         {
             _projeService.CreateUrun(id);
