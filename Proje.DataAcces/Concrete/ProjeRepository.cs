@@ -22,6 +22,8 @@ namespace Proje.DataAcces.Concrete
                     {
                         var x = projeDbContext.Hammadde.ToList();
                         foreach (var hammadde in x)
+                        var x = projeDbContext.Stok.GroupBy(g=>g.HamId).ToList();
+                        foreach (var a in x)
                         {
                             HamUret.Hammadde.HamAdet = HamUret.Hammadde.HamAdet + 100;
                             projeDbContext.SaveChanges();
@@ -51,6 +53,7 @@ namespace Proje.DataAcces.Concrete
                 }
 
             }
+            throw new NotImplementedException();
         }
 
         public void DeleteHammadde(int id)

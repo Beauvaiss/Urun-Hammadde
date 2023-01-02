@@ -38,7 +38,7 @@ namespace Proje.API.Controller
             _projeService.DeleteUrun(id);
 
         }
-         
+        
         [HttpPut("{id}")]
         public void Post2(int id)
         {
