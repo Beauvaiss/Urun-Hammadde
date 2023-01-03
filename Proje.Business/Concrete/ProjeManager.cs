@@ -14,6 +14,7 @@ namespace Proje.Business.Concrete
     public class ProjeManager : IProjeService
     {
         private IProjeRepository _projeRepository;
+
         public ProjeManager(IProjeRepository projeRepository)
         {
             _projeRepository=projeRepository;

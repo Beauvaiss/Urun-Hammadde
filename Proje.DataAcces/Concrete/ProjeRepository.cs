@@ -11,76 +11,84 @@ namespace Proje.DataAcces.Concrete
 {
     public class ProjeRepository : IProjeRepository
     {
+        private readonly ProjeDbContext _projeDbContext;
+        String Message { get; set; }
+
+        public ProjeRepository()
+        {
+            _projeDbContext = new ProjeDbContext();
+        }
+
         public void CreateHammadde(int id)
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
-                var HamUret = projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
+           
+                var HamUret = _projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
                if (HamUret != null)
                 {
-                    var x = projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
+                    var x = _projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
                     foreach (var a in x)
                     {
-                        var b = projeDbContext.Hammadde.Where(x => x.HamId.Equals(a.HamId)).FirstOrDefault();
+                        var b = _projeDbContext.Hammadde.Where(x => x.HamId.Equals(a.HamId)).FirstOrDefault();
                         b.HamAdet = b.HamAdet + 100;
-
-                        projeDbContext.SaveChanges();
+                        _projeDbContext.SaveChanges();
                     }
 
-                }
+                
             }
         }
 
         public void CreateUrun(int id)
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
-                var UrunUret = projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
+            
+                var UrunUret = _projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
                 if (UrunUret != null)
                 {
-                    var urungetir = projeDbContext.Urun.Where(w => w.UrunId.Equals(id)).FirstOrDefault();
+                    var urungetir = _projeDbContext.Urun.Where(w => w.UrunId.Equals(id)).FirstOrDefault();
                     urungetir.UrunAdet = urungetir.UrunAdet + 1;
-                    var x = projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
+                    var x = _projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
                     foreach (var a in x)
                     {
-                        var b = projeDbContext.Hammadde.Where(x => x.HamId.Equals(a.HamId)).FirstOrDefault();
-                        var c = projeDbContext.Stok.Where(x => x.Hammadde.HamId.Equals(a.HamId)).FirstOrDefault();
-                        b.HamAdet = b.HamAdet -c.StokSayi;
-
-                        projeDbContext.SaveChanges();
+                        var b = _projeDbContext.Hammadde.Where(x => x.HamId.Equals(a.HamId)).FirstOrDefault();
+                        var c = _projeDbContext.Stok.Where(x => x.Hammadde.HamId.Equals(a.HamId)).FirstOrDefault();
+                    if(b.HamAdet>=c.StokSayi)
+                    {
+                        b.HamAdet = b.HamAdet - c.StokSayi;
+                        _projeDbContext.SaveChanges();
                     }
-                }
+                    else
+                    {
+                        throw new Exception("Yeterli Hammadde Yok");
+                    }  
+                    }
+                
             }
         }
 
         public void DeleteHammadde(int id)
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
+            
                 var deleteHammadde = GetHammaddeById(id);
-                projeDbContext.Hammadde.Remove(deleteHammadde);
-                projeDbContext.SaveChanges();
-            }
+                _projeDbContext.Hammadde.Remove(deleteHammadde);
+                _projeDbContext.SaveChanges();
+            
           
             
         }
 
         public void DeleteUrun(int id)
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
+          
                 var deleteUrun = GetUrunById(id);
-                projeDbContext.Urun.Remove(deleteUrun);
-                projeDbContext.SaveChanges();
-            }
+                _projeDbContext.Urun.Remove(deleteUrun);
+                _projeDbContext.SaveChanges();
+            
         }
 
         public List<Hammadde> GetAllHammadde()
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
-                return projeDbContext.Hammadde.ToList();
-            }
+           
+                return _projeDbContext.Hammadde.ToList();
+            
         }
 
         public List<Stok> GetAllStok()
@@ -90,26 +98,23 @@ namespace Proje.DataAcces.Concrete
 
         public List<Urun> GetAllUrun()
         {
-            using (var projeDbContext=new ProjeDbContext())
-            {
-                return projeDbContext.Urun.ToList();
-            }
+           
+                return _projeDbContext.Urun.ToList();
+            
         }
 
         public Hammadde GetHammaddeById(int id)
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
-                return projeDbContext.Hammadde.Find(id);
-            }
+           
+                return _projeDbContext.Hammadde.Find(id);
+            
         }
 
         public Urun GetUrunById(int id)
         {
-            using (var projeDbContext = new ProjeDbContext())
-            {
-                return projeDbContext.Urun.Find(id);
-            }
+            
+                return _projeDbContext.Urun.Find(id);
+            
         }
     }
 }
