@@ -30,6 +30,11 @@ namespace Proje.Business.Concrete
             _projeRepository.CreateUrun(id);
         }
 
+        public User CreateUser(User user)
+        {
+            return _projeRepository.CreateUser(user);
+        }
+
         public void DeleteHammadde(int id)
         {
             _projeRepository.DeleteHammadde(id);

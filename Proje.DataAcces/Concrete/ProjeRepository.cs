@@ -73,6 +73,7 @@ namespace Proje.DataAcces.Concrete
         }
         public String Login(string username, string password)
         {
+            password=Encrypt.ConvertToEncrypt(password);
             var user = _projeDbContext.User.Where(x=>x.UserName==username&&x.Password==password).ToList();
             if (user.Count > 0)
             {
@@ -139,10 +140,13 @@ namespace Proje.DataAcces.Concrete
                 return _projeDbContext.Urun.Find(id);
             
         }
-
-        public User Login1(string username, string password)
+        public User CreateUser(User user)
         {
-            throw new NotImplementedException();
+            user.Password=Encrypt.ConvertToEncrypt(user.Password);
+            _projeDbContext.User.Add(user);
+            _projeDbContext.SaveChanges();
+            return user;
+
         }
     }
 }

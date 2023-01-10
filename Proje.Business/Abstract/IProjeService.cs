@@ -19,6 +19,7 @@ namespace Proje.Business.Abstract
         void CreateHammadde(int id);
         void DeleteHammadde(int id);
         String Login(string username, string password);
+        User CreateUser(User user);
 
     }
 }

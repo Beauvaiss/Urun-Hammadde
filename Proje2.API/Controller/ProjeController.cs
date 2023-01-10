@@ -13,7 +13,7 @@ namespace Proje.API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+
     public class ProjeController : ControllerBase
     {
         private IProjeService _projeService;
@@ -59,6 +59,11 @@ namespace Proje.API.Controller
         public void CreateProduct(int id)
         {
             _projeService.CreateUrun(id);
+        }
+        [HttpPost("Register")]
+        public User Register(User user)
+        {
+            return _projeService.CreateUser(user);
         }
        
 
