@@ -1,9 +1,12 @@
-﻿using Proje.DataAcces.Abstract;
+﻿using Microsoft.IdentityModel.Tokens;
+using Proje.DataAcces.Abstract;
 using Proje.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,10 +21,8 @@ namespace Proje.DataAcces.Concrete
         {
             _projeDbContext = new ProjeDbContext();
         }
-
         public void CreateHammadde(int id)
         {
-           
                 var HamUret = _projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
                if (HamUret != null)
                 {
@@ -36,7 +37,6 @@ namespace Proje.DataAcces.Concrete
                 
             }
         }
-
         public void CreateUrun(int id)
         {
             
@@ -60,18 +60,47 @@ namespace Proje.DataAcces.Concrete
                         throw new Exception("Yeterli Hammadde Yok");
                     }  
                     }
-                
             }
         }
-
         public void DeleteHammadde(int id)
-        {
-            
+        {  
                 var deleteHammadde = GetHammaddeById(id);
                 _projeDbContext.Hammadde.Remove(deleteHammadde);
                 _projeDbContext.SaveChanges();
             
           
+            
+        }
+        public String Login(string username, string password)
+        {
+            var user = _projeDbContext.User.Where(x=>x.UserName==username&&x.Password==password).ToList();
+            if (user.Count > 0)
+            {
+                  var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, username),
+            };
+            var signinKey = "BuBenimSigninKey";
+            var securityKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signinKey));
+            var credential = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
+
+            var jwtSecurityToken = new JwtSecurityToken(
+                issuer:"https://locahost",
+                audience:"https://locahost",
+                claims:claims,
+                expires:DateTime.Now.AddDays(1),
+                notBefore:DateTime.Now,
+                signingCredentials:credential
+
+                );
+
+            var token =new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
+                return token;
+            }
+            else
+            {
+                return "Wrong Username or Password";
+            }
             
         }
 
@@ -90,12 +119,6 @@ namespace Proje.DataAcces.Concrete
                 return _projeDbContext.Hammadde.ToList();
             
         }
-
-        public List<Stok> GetAllStok()
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Urun> GetAllUrun()
         {
            
@@ -115,6 +138,11 @@ namespace Proje.DataAcces.Concrete
             
                 return _projeDbContext.Urun.Find(id);
             
+        }
+
+        public User Login1(string username, string password)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -44,12 +44,6 @@ namespace Proje.Business.Concrete
         {
            return _projeRepository.GetAllHammadde();
         }
-
-        public List<Stok> GetAllStok()
-        {
-            return _projeRepository.GetAllStok();
-        }
-
         public List<Urun> GetAllUrun()
         {
             return _projeRepository.GetAllUrun();
@@ -63,6 +57,11 @@ namespace Proje.Business.Concrete
         public Urun GetUrunById(int id)
         {
             return _projeRepository.GetUrunById(id);
+        }
+
+        public string Login(string username, string password)
+        {
+            return _projeRepository.Login(username, password);
         }
     }
 

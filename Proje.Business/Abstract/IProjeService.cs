@@ -11,7 +11,6 @@ namespace Proje.Business.Abstract
     {
         
         List<Urun> GetAllUrun();
-        List<Stok> GetAllStok();
         List<Hammadde> GetAllHammadde();
         Urun GetUrunById(int id);
         Hammadde GetHammaddeById(int id);
@@ -19,7 +18,8 @@ namespace Proje.Business.Abstract
         void DeleteUrun(int id);
         void CreateHammadde(int id);
         void DeleteHammadde(int id);
-        
+        String Login(string username, string password);
+
     }
 }
 

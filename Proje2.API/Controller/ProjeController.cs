@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Proje.Business.Abstract;
 using Proje.Business.Concrete;
 using Proje.Entities;
-
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Proje.API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProjeController : ControllerBase
     {
         private IProjeService _projeService;
@@ -26,7 +31,7 @@ namespace Proje.API.Controller
             return _projeService.GetAllHammadde();
         }
 
-        [HttpGet("GetProductById")]   
+        [HttpGet("GetProductById")]
         public Urun GetProductById(int id)
         {
             return _projeService.GetUrunById(id);
@@ -44,7 +49,7 @@ namespace Proje.API.Controller
             _projeService.DeleteUrun(id);
 
         }
-        
+
         [HttpPut("CreateRawMaterials")]
         public void CreateRawMaterials(int id)
         {
@@ -55,6 +60,9 @@ namespace Proje.API.Controller
         {
             _projeService.CreateUrun(id);
         }
+       
+
+
 
     }
 }

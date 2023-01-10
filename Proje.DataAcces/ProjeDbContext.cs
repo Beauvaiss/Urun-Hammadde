@@ -18,5 +18,6 @@ namespace Proje.DataAcces
         public DbSet<Urun> Urun { get; set; }
         public DbSet<Hammadde> Hammadde { get; set; }
         public DbSet<Stok> Stok { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
