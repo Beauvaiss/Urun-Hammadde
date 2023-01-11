@@ -72,9 +72,5 @@ namespace Proje.API.Controller
             }
             return response;
         }
-        public string Get(string username, string password)
-        {
-            return _projeService.Login(username, password);
-        }
     }
 }
