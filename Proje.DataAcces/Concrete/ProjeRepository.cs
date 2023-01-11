@@ -145,7 +145,7 @@ namespace Proje.DataAcces.Concrete
             user.Password=Encrypt.ConvertToEncrypt(user.Password);
             _projeDbContext.User.Add(user);
             _projeDbContext.SaveChanges();
-            return user;
+            return null;
 
         }
     }
