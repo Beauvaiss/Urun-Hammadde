@@ -51,21 +51,88 @@ namespace Proje.API.Controller
         
 
         [HttpGet("GetAllRawMaterials")]
-        public List<Hammadde> GetRawMaterials()
+        public ApiResponse<List<Hammadde>> GetRawMaterials()
         {
-            return _projeService.GetAllHammadde();
+            var response = new ApiResponse<List<Hammadde>>();
+
+            try
+            {
+                var result = _projeService.GetAllHammadde();
+
+                response = new ApiResponse<List<Hammadde>>
+                {
+                    Code = 200,
+                    Message = "OK",
+                    ResponseData = result
+                };
+            }
+            catch (Exception ex)
+            {
+                response = new ApiResponse<List<Hammadde>>
+                {
+                    Code = 404,
+                    Message = ex.Message,
+                    ResponseData = null
+                };
+            }
+
+            return response;
         }
-
         [HttpGet("GetProductById")]
-        public Urun GetProductById(int id)
+        public ApiResponse<Urun> GetProductById(int id)
         {
-            return _projeService.GetUrunById(id);
+            var response = new ApiResponse<Urun>();
 
+            try
+            {
+                var result = _projeService.GetUrunById(id);
+
+                response = new ApiResponse<Urun>
+                {
+                    Code = 200,
+                    Message = "OK",
+                    ResponseData = result
+                };
+            }
+            catch (Exception ex)
+            {
+                response = new ApiResponse<Urun>
+                {
+                    Code = 404,
+                    Message = ex.Message,
+                    ResponseData = null
+                };
+            }
+
+            return response;
         }
         [HttpGet("GetRawMaterialById")]
-        public Hammadde GetRawMaterialById(int id)
+        public ApiResponse<Hammadde> GetRawMaterialById(int id)
         {
-            return _projeService.GetHammaddeById(id);
+            var response = new ApiResponse<Hammadde>();
+
+            try
+            {
+                var result = _projeService.GetUrunById(id);
+
+                response = new ApiResponse<Hammadde>
+                {
+                    Code = 200,
+                    Message = "OK",
+                    ResponseData = result
+                };
+            }
+            catch (Exception ex)
+            {
+                response = new ApiResponse<Hammadde>
+                {
+                    Code = 404,
+                    Message = ex.Message,
+                    ResponseData = null
+                };
+            }
+
+            return response;
         }
 
         [HttpDelete("DeleteProduct")]
@@ -85,11 +152,8 @@ namespace Proje.API.Controller
         {
             _projeService.CreateUrun(id);
         }
-        [HttpPost("Register")]
-        public User Register(User user)
-        {
-            return _projeService.CreateUser(user);
-        }
+     
+       
        
 
 

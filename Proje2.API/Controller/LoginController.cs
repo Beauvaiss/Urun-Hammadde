@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Proje.Business.Abstract;
+using Proje.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,6 +17,11 @@ namespace Proje.API.Controller
         public LoginController(IProjeService projeService)
         {
             _projeService = projeService;
+        }
+        [HttpPost("Register")]
+        public User Register(User user)
+        {
+            return _projeService.CreateUser(user);
         }
         [HttpGet("GetToken")]
         public string Get(string username, string password)
