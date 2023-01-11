@@ -13,6 +13,7 @@ namespace Proje.API.Controller
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
 
     public class ProjeController : ControllerBase
     {
@@ -152,11 +153,5 @@ namespace Proje.API.Controller
         {
             _projeService.CreateUrun(id);
         }
-     
-       
-       
-
-
-
     }
 }
