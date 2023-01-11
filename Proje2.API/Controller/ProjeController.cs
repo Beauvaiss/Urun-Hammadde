@@ -21,9 +21,34 @@ namespace Proje.API.Controller
             _projeService = projeService;
         }
         [HttpGet("GetAllProducts")]
-        public List<Urun> GetProduct() {
-            return _projeService.GetAllUrun();
+        public ApiResponse<List<Urun>> GetProduct()
+        {
+            var response = new ApiResponse<List<Urun>>();
+
+            try
+            {
+                var result = _projeService.GetAllUrun();
+
+                response = new ApiResponse<List<Urun>>
+                {
+                    Code = 200,
+                    Message = "OK",
+                    ResponseData = result
+                };
+            }
+            catch (Exception ex)
+            {
+                response = new ApiResponse<List<Urun>>
+                {
+                    Code = 404,
+                    Message = ex.Message,
+                    ResponseData = null
+                };
+            }
+
+            return response;
         }
+        
 
         [HttpGet("GetAllRawMaterials")]
         public List<Hammadde> GetRawMaterials()
