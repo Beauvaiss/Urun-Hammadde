@@ -15,6 +15,10 @@ namespace Proje.Entities
         [ForeignKey("Urun")]
         public int UrunId { get; set; }
         public Urun Urun { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public Urun User { get; set; }
+
         [ForeignKey("Hammadde")]
         public int HamId { get; set; }
         public Hammadde Hammadde { get; set; }

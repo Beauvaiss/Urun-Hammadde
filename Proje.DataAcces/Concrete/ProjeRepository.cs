@@ -40,11 +40,11 @@ namespace Proje.DataAcces.Concrete
         public void CreateUrun(int id)
         {
             
-                var UrunUret = _projeDbContext.Stok.Where(d => d.UrunId.Equals(id)).FirstOrDefault();
+                var UrunUret = _projeDbContext.Stok.Where(d => d.UserId.Equals(id)).FirstOrDefault();
                 if (UrunUret != null)
                 {
                     var urungetir = _projeDbContext.Urun.Where(w => w.UrunId.Equals(id)).FirstOrDefault();
-                    urungetir.UrunAdet = urungetir.UrunAdet + 1;
+                   
                     var x = _projeDbContext.Stok.Where(w => w.UrunId.Equals(id)).ToList();
                     foreach (var a in x)
                     {
@@ -53,13 +53,16 @@ namespace Proje.DataAcces.Concrete
                     if(b.HamAdet>=c.StokSayi)
                     {
                         b.HamAdet = b.HamAdet - c.StokSayi;
-                        _projeDbContext.SaveChanges();
                     }
                     else
                     {
                         throw new Exception("Yeterli Hammadde Yok");
-                    }  
                     }
+  
+                
+                    }
+                 urungetir.UrunAdet = urungetir.UrunAdet + 1;
+                 _projeDbContext.SaveChanges();
             }
         }
         public void DeleteHammadde(int id)
@@ -74,14 +77,17 @@ namespace Proje.DataAcces.Concrete
         public String Login(string username, string password)
         {
             password=Encrypt.ConvertToEncrypt(password);
-            var user = _projeDbContext.User.Where(x=>x.UserName==username&&x.Password==password).ToList();
-            if (user.Count > 0)
+            var user = _projeDbContext.User.Where(x=>x.UserName==username&&x.Password==password).FirstOrDefault();
+       
+            if (user!=null)
+
             {
-                  var claims = new[]
+                var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, username),
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName),
             };
-            var signinKey = "BuBenimSigninKey";
+                var signinKey = "BuBenimSigninKey";
             var securityKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signinKey));
             var credential = new SigningCredentials(securityKey,SecurityAlgorithms.HmacSha256);
 
@@ -102,6 +108,7 @@ namespace Proje.DataAcces.Concrete
             {
                 return "Wrong Username or Password";
             }
+         
             
         }
 
@@ -142,10 +149,19 @@ namespace Proje.DataAcces.Concrete
         }
         public User CreateUser(User user)
         {
+
+            var control = _projeDbContext.User.Where(d => d.UserName.Equals(user.UserName)).FirstOrDefault();
+            if (control == null)
+            {
             user.Password=Encrypt.ConvertToEncrypt(user.Password);
             _projeDbContext.User.Add(user);
             _projeDbContext.SaveChanges();
-            return null;
+            return (null);
+            }
+            else
+            {
+                return null;
+            }
 
         }
     }
